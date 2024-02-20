@@ -21,7 +21,7 @@ export function useOnFileChange() {
   const [file, setFile] = useState<File | null>(null);
 
   useEffect(() => {
-    const handleFileChange = (event) => {
+    const handleFileChange = (event: any) => {
       const newFile = event.target.files[0] || null;
       setFile(newFile);
     };
