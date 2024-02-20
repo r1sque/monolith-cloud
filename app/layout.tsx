@@ -5,6 +5,7 @@ import "./globals.css";
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
+  metadataBase: new URL("https://monolith.cloud/"),
   title: "Monolith Cloud",
   description: "The best way to share small files with others",
 };

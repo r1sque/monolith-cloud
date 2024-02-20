@@ -27,25 +27,19 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
   const openGraph: OpenGraph = {};
 
-  switch (blob.contentType) {
-    case 'image/png':
-    case 'image/jpeg':
-    case 'image/gif':
-    case 'image/webp':
-      openGraph.images = [{
-        url: blob.url,
-        alt: blob.pathname,
-      }];
-      break;
-    case 'video/mp4':
-      openGraph.videos = [{
-        url: blob.url,
-      }];
-      break;
-    case 'audio/mpeg':
-      openGraph.audio = [{
-        url: blob.url,
-      }];
+  if (blob.contentType.startsWith('image/')) {
+    openGraph.images = [{
+      url: blob.url,
+      alt: blob.pathname,
+    }];
+  } else if (blob.contentType.startsWith('video/')) {
+    openGraph.videos = [{
+      url: blob.url,
+    }];
+  } else if (blob.contentType.startsWith('audio/')) {
+    openGraph.audio = [{
+      url: blob.url,
+    }];
   }
 
   return {
@@ -55,7 +49,7 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       title: blob.pathname,
       description: `Uploaded at ${blob.uploadedAt.toDateString()} | ${blob.size} bytes`,
       type: 'website',
-      url: blob.url,
+      url: `https://monolith-cloud.vercel.app/${params.slug}`,
     }
   };
 }
@@ -76,31 +70,53 @@ export default async function File({ params }: { params: { slug: string } }) {
   const [size, unit] = calculateSizeAndUnit(blob.size);
 
   return (
-    <main className="flex items-center justify-center h-screen">
-      <div className="bg-gray-800 max-w-2xl mx-auto p-4 rounded border shadow-md">
-        <h2 className=" text-center text-2xl font-bold mb-4">{blob.pathname}</h2>
+    <main className=" h-screen flex flex-col">
+      <nav className="bg-black-100">
+        <div className="flex flex-wrap items-center justify-between mx-32 p-4">
+          <div className="hidden w-full md:block md:w-auto" id="navbar-default">
+            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-black-100 rounded-lg bg-black-100 md:flex-row md:space-x-8 rtl:space-x-reverse">
+              <li>
+                <a href="/" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">Home</a>
+              </li>
 
-        <PreviewComponent blob={blob} className="mb-4" />
+              <li>
+                <a href="https://github.com/r1sque/monolith-cloud" type="_blank" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">GitHub Page</a>
+              </li>
 
-        <h3 className="text-lg mb-2">
-          Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span> <span>|</span> 
-          <span className="font-semibold">{size} {unit}</span>. 
-        </h3>
-        <div>
-          <a href={blob.downloadUrl} className="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
-            Download
-          </a>
+              <div className="flex flex-row -translate-x-48 translate-y-48">
+                <a className="cursor-default text-white hover:text-white/90 transition duration-300" href="/">monolith-cloud.vercel.app</a>
+                <div aria-hidden="true" className="select-none text-white">/</div>
+                <a className="text-white hover:text-white/90 transition duration-300" href={params.slug}>{params.slug}</a>
+              </div>
+            </ul>
+          </div>
+        </div>
+      </nav>
+      <div className="bg-black-100 flex items-center justify-center h-screen">
+        <div className="bg-white/5 max-w-2xl mx-auto p-4 rounded border shadow-md -translate-y-10 ">
+          <h2 className=" text-center text-2xl font-bold mb-4">{blob.pathname}</h2>
 
-          <CopyButton content={blob.url} className="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 ml-6">
-            Copy direct link
-          </CopyButton>
+          <PreviewComponent blob={blob} className="mb-4" />
 
-          <CopyButton content={`https://monolith-cloud.vercel.app/${params.slug}`} className="inline-block bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 ml-6">
-            Copy link
-          </CopyButton>
+          <h3 className="text-lg mb-2">
+            &nbsp;&nbsp;&nbsp;Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span> <span>| </span> 
+            <span className="font-semibold">{size} {unit}</span>. 
+          </h3>
+          <div className='flex items-center justify-center'>
+            <a href={blob.downloadUrl} className="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
+              Download
+            </a>
+
+            <CopyButton content={blob.url} className="inline-block bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 transition duration-300 ml-6">
+              Copy direct link
+            </CopyButton>
+
+            <CopyButton content={`https://monolith-cloud.vercel.app/${params.slug}`} className="inline-block bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600 transition duration-300 ml-6">
+              Copy link
+            </CopyButton>
+          </div>
         </div>
       </div>
     </main>
-
   );
 }
