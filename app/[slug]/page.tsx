@@ -3,6 +3,7 @@ import { head } from '@vercel/blob';
 import PreviewComponent from '@/components/preview-component';
 import CopyButton from '@/components/copy-button';
 import { notFound } from 'next/navigation';
+import { OpenGraph } from "next/dist/lib/metadata/types/opengraph-types";
 
 async function fetchBlob(id: string) {
   try {
@@ -24,8 +25,38 @@ async function fetchBlob(id: string) {
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const blob = await fetchBlob(params.slug);
 
+  const openGraph: OpenGraph = {};
+
+  switch (blob.contentType) {
+    case 'image/png':
+    case 'image/jpeg':
+    case 'image/gif':
+    case 'image/webp':
+      openGraph.images = [{
+        url: blob.url,
+        alt: blob.pathname,
+      }];
+      break;
+    case 'video/mp4':
+      openGraph.videos = [{
+        url: blob.url,
+      }];
+      break;
+    case 'audio/mpeg':
+      openGraph.audio = [{
+        url: blob.url,
+      }];
+  }
+
   return {
-    title: `${blob.pathname} | Monolith Cloud`
+    title: `${blob.pathname} | Monolith Cloud`,
+    openGraph: {
+      ...openGraph,
+      title: blob.pathname,
+      description: `Uploaded at ${blob.uploadedAt.toDateString()} | ${blob.size} bytes`,
+      type: 'website',
+      url: blob.url,
+    }
   };
 }
 
