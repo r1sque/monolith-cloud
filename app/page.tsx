@@ -1,10 +1,41 @@
-import { uploadFile } from "./actions";
-import { SubmitButton, SubmitSpinner } from "@/components/submit-components";
+import { SubmitButton, StatusLabel } from "@/components/submit-components";
+import { put, del } from "@vercel/blob";
+import { redirect } from "next/navigation";
+import { sql } from '@vercel/postgres';
 
 export default function Home() {
+  async function uploadFile(formData: FormData) {
+    'use server';
+
+    const file = formData.get('file') as File;
+  
+    if (file.size > 1_048_576) {
+      throw new Error();
+    }
+  
+    let id: string;
+    try {
+      const blob = await put(file.name, file, { access: 'public' });
+  
+      const match = /https:\/\/[\w+._-]+\/.*-(\w+)\..*/.exec(blob.url);
+      if (match === null) {
+        del(blob.url);
+        throw new Error('failed to match regex');
+      }
+      id = Array.from(match[1]).filter((_, i) => i % 2).join('');
+  
+      await sql`INSERT INTO metadata (id, blob_url) VALUES (${id}, ${blob.url})`;
+    } catch (e) {
+      console.error(e);
+      throw new Error();
+    }
+  
+    redirect('/' + id);
+  }
+
   return (
     <main className="bg-black-50 flex min-h-screen flex-col items-center p-24">
-      <h1 className="font-bold text-7xl bg-gradient-to-r from-purple-500 to-white text-transparent bg-clip-text" >
+      <h1 className="font-bold text-7xl  text-center bg-gradient-to-r from-purple-500 to-white text-transparent bg-clip-text" >
         Monolith Cloud
       </h1>
       <p className="mt-8 w-2/3 text-center font-medium text-3xl bg-gradient-to-r from-purple-500 to-white text-transparent bg-clip-text leading-normal" >
@@ -15,7 +46,7 @@ export default function Home() {
             action={uploadFile}>
         <div className="flex items-center justify-center w-full">
           <label htmlFor="file" className="flex flex-col items-center justify-center w-full h-64 rounded-lg cursor-pointer">
-            <SubmitSpinner />
+            <StatusLabel />
             <input name="file" id="file" type="file" className="hidden" required/>
           </label>
         </div>

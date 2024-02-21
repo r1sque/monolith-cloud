@@ -50,6 +50,9 @@ const config: Config = {
         '6/7': '85.7142857%',
         '1300': '600px',
       },
+      screens: {
+        'phone': { 'raw': '(max-width: 400px)' }, /* be aware here cuh, make sure that if the width of the screen is less then 600px the upload test is set to text-sm */
+      },
     },
   },
   plugins: [],

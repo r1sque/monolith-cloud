@@ -4,6 +4,8 @@ import PreviewComponent from '@/components/preview-component';
 import CopyButton from '@/components/copy-button';
 import { notFound } from 'next/navigation';
 import { OpenGraph } from "next/dist/lib/metadata/types/opengraph-types";
+import Link from 'next/link';
+import { Metadata } from 'next';
 
 async function fetchBlob(id: string) {
   try {
@@ -25,7 +27,16 @@ async function fetchBlob(id: string) {
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const blob = await fetchBlob(params.slug);
 
-  const openGraph: OpenGraph = {};
+  const metadata: Metadata = {
+    title: `${blob.pathname} | Monolith Cloud`,
+    openGraph: {
+      type: 'website',
+      title: blob.pathname,
+      description: `Uploaded at ${blob.uploadedAt.toDateString()} | ${blob.size} bytes`,
+      url: `https://monolith-cloud.vercel.app/${params.slug}`,
+    }
+  };
+  const openGraph = metadata.openGraph!;
 
   if (blob.contentType.startsWith('image/')) {
     openGraph.images = [{
@@ -33,21 +44,16 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       alt: blob.pathname,
     }];
   } else if (blob.contentType.startsWith('video/')) {
+    // @ts-ignore
+    openGraph.type = 'video.other'
     openGraph.videos = blob.url;
   } else if (blob.contentType.startsWith('audio/')) {
+    // @ts-ignore
+    openGraph.type = 'music.song'
     openGraph.audio = blob.url;
   }
 
-  return {
-    title: `${blob.pathname} | Monolith Cloud`,
-    openGraph: {
-      ...openGraph,
-      title: blob.pathname,
-      description: `Uploaded at ${blob.uploadedAt.toDateString()} | ${blob.size} bytes`,
-      type: 'website',
-      url: `https://monolith-cloud.vercel.app/${params.slug}`,
-    }
-  };
+  return metadata;
 }
 
 function calculateSizeAndUnit(size: number) {
@@ -72,11 +78,11 @@ export default async function File({ params }: { params: { slug: string } }) {
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
             <ul className="font-medium flex flex-col text-lg p-4 md:p-0 mt-4 border border-black-100 rounded-lg bg-black-100 md:flex-row md:space-x-8 rtl:space-x-reverse">
               <li>
-                <a href="/" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">Home</a>
+                <Link href="/" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">Home</Link>
               </li>
 
               <li>
-                <a href="https://github.com/r1sque/monolith-cloud" type="_blank" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">GitHub Page</a>
+                <Link href="https://github.com/r1sque/monolith-cloud" type="_blank" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">GitHub Page</Link>
               </li>
 
               {/*  nav that shows the path of the user
@@ -96,8 +102,8 @@ export default async function File({ params }: { params: { slug: string } }) {
 
           <PreviewComponent blob={blob} className="mb-4" />
 
-          <h3 className="text-lg mb-2">
-            &nbsp;&nbsp;&nbsp;Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span> <span>| </span> 
+          <h3 className="text-lg text-center mb-2">
+            Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span> <span>| </span> 
             <span className="font-semibold">{size} {unit}</span>. 
           </h3>
           <div className='flex items-center justify-center'>
