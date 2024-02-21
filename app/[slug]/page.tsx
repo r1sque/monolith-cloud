@@ -33,13 +33,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
       alt: blob.pathname,
     }];
   } else if (blob.contentType.startsWith('video/')) {
-    openGraph.videos = [{
-      url: blob.url,
-    }];
+    openGraph.videos = blob.url;
   } else if (blob.contentType.startsWith('audio/')) {
-    openGraph.audio = [{
-      url: blob.url,
-    }];
+    openGraph.audio = blob.url;
   }
 
   return {
@@ -74,7 +70,7 @@ export default async function File({ params }: { params: { slug: string } }) {
       <nav className="bg-black-100">
         <div className="flex flex-wrap items-center justify-between mx-32 p-4">
           <div className="hidden w-full md:block md:w-auto" id="navbar-default">
-            <ul className="font-medium flex flex-col p-4 md:p-0 mt-4 border border-black-100 rounded-lg bg-black-100 md:flex-row md:space-x-8 rtl:space-x-reverse">
+            <ul className="font-medium flex flex-col text-lg p-4 md:p-0 mt-4 border border-black-100 rounded-lg bg-black-100 md:flex-row md:space-x-8 rtl:space-x-reverse">
               <li>
                 <a href="/" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">Home</a>
               </li>
@@ -83,11 +79,13 @@ export default async function File({ params }: { params: { slug: string } }) {
                 <a href="https://github.com/r1sque/monolith-cloud" type="_blank" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">GitHub Page</a>
               </li>
 
-              <div className="flex flex-row -translate-x-48 translate-y-48">
-                <a className="cursor-default text-white hover:text-white/90 transition duration-300" href="/">monolith-cloud.vercel.app</a>
-                <div aria-hidden="true" className="select-none text-white">/</div>
-                <a className="text-white hover:text-white/90 transition duration-300" href={params.slug}>{params.slug}</a>
-              </div>
+              {/*  nav that shows the path of the user
+                <div className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse -translate-x-72 translate-y-10">
+                  <a className="cursor-default text-white hover:text-white/90 transition duration-300" href="/">monolith-cloud.vercel.app</a>
+                  <div aria-hidden="true" className="select-none text-white">/</div>
+                  <a className="text-white hover:text-white/90 transition duration-300" href={params.slug}>{params.slug}</a>
+                </div>
+               */}
             </ul>
           </div>
         </div>
