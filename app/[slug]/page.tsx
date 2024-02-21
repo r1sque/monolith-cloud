@@ -3,7 +3,6 @@ import { head } from '@vercel/blob';
 import PreviewComponent from '@/components/preview-component';
 import CopyButton from '@/components/copy-button';
 import { notFound } from 'next/navigation';
-import { OpenGraph } from "next/dist/lib/metadata/types/opengraph-types";
 import Link from 'next/link';
 import { Metadata } from 'next';
 
@@ -27,12 +26,15 @@ async function fetchBlob(id: string) {
 export async function generateMetadata({ params }: { params: { slug: string } }) {
   const blob = await fetchBlob(params.slug);
 
+  const [size, unit] = calculateSizeAndUnit(blob.size);
+
   const metadata: Metadata = {
     title: `${blob.pathname} | Monolith Cloud`,
     openGraph: {
+      siteName: 'Monolith Cloud',
       type: 'website',
       title: blob.pathname,
-      description: `Uploaded at ${blob.uploadedAt.toDateString()} | ${blob.size} bytes`,
+      description: `Uploaded at ${blob.uploadedAt.toDateString()} | ${size} ${unit}`,
       url: `https://monolith-cloud.vercel.app/${params.slug}`,
     }
   };
@@ -58,9 +60,9 @@ export async function generateMetadata({ params }: { params: { slug: string } })
 
 function calculateSizeAndUnit(size: number) {
   if (size >= 1_048_576) {
-    return [size / 1_048_576, 'megabytes'];
+    return [(size / 1_048_576).toFixed(2), 'megabytes'];
   } else if (size >= 1024) {
-    return [size / 1024, 'kilobytes'];
+    return [(size / 1024).toFixed(2), 'kilobytes'];
   }
 
   return [size, 'bytes'];
@@ -81,9 +83,11 @@ export default async function File({ params }: { params: { slug: string } }) {
                 <Link href="/" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">Home</Link>
               </li>
 
-              <li>
+              {/*
+               <li>
                 <Link href="https://github.com/r1sque/monolith-cloud" type="_blank" className="block py-2 px-3 text-white bg-white rounded md:bg-transparent md:text-white md:p-0 hover:text-white/90 transition duration-300" aria-current="page">GitHub Page</Link>
-              </li>
+              </li> 
+              */}
 
               {/*  nav that shows the path of the user
                 <div className="font-medium flex flex-col p-4 md:p-0 mt-4 md:flex-row md:space-x-8 rtl:space-x-reverse -translate-x-72 translate-y-10">
@@ -97,7 +101,7 @@ export default async function File({ params }: { params: { slug: string } }) {
         </div>
       </nav>
       <div className="bg-black-100 flex items-center justify-center h-screen">
-        <div className="bg-white/5 max-w-2xl mx-auto p-4 rounded border shadow-md -translate-y-10 ">
+        <div className="bg-white/5 max-w-2xl mx-auto p-4 rounded border shadow-md -translate-y-10 phone:size-2/3">
           <h2 className=" text-center text-2xl font-bold mb-4">{blob.pathname}</h2>
 
           <PreviewComponent blob={blob} className="mb-4" />
@@ -106,7 +110,7 @@ export default async function File({ params }: { params: { slug: string } }) {
             Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span> <span>| </span> 
             <span className="font-semibold">{size} {unit}</span>. 
           </h3>
-          <div className='flex items-center justify-center'>
+          <div className='flex items-center justify-center phone:scale-75'>
             <a href={blob.downloadUrl} className="inline-block bg-green-500 text-white px-4 py-2 rounded hover:bg-green-600 transition duration-300">
               Download
             </a>

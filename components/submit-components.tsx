@@ -10,14 +10,15 @@ export function SubmitButton() {
     <button
       disabled={pending}
       type="submit"
-      className="w-full bg-purple-400 phone:text-sm text-white py-2 px-4 rounded-md hover:bg-purple-500 transition-colors duration-300 focus-visible:outline-none focus-visible:ring focus-visible:border-purple-700"
+      className="w-full bg-purple-400 phone:text-sm phone:text-ellipsis phone:overflow-hidden text-white py-2 px-4 rounded-md hover:bg-purple-500 transition-colors duration-300 focus-visible:outline-none focus-visible:ring focus-visible:border-purple-700"
     >
       {pending ? 'Uploading...' : 'Upload'}
     </button>
   );
 }
 
-export function useOnFileChange() {
+export function StatusLabel() {
+  const { pending } = useFormStatus();
   const [file, setFile] = useState<File>();
 
   useEffect(() => {
@@ -26,23 +27,12 @@ export function useOnFileChange() {
       setFile(newFile);
     };
 
-    const fileInput = document.getElementById('file'); // Replace with the actual ID of your file input
+    const fileInput = document.getElementById('file');
 
-    if (fileInput) {
-      fileInput.addEventListener('change', handleFileChange);
+    fileInput?.addEventListener('change', handleFileChange);
 
-      return () => {
-        fileInput.removeEventListener('change', handleFileChange);
-      };
-    }
+    return () => fileInput?.removeEventListener('change', handleFileChange);
   }, []);
-
-  return file;
-}
-
-export function StatusLabel() {
-  const { pending } = useFormStatus();
-  const file = useOnFileChange();
 
   return (
     <div className="flex flex-col items-center justify-center pt-5 pb-6 hover:scale-110 transition-transform duration-000 ease-in-out">

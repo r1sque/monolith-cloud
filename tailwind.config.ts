@@ -32,6 +32,9 @@ const config: Config = {
       maxHeight: {
         '600': '600px',
       },
+      maxWidth: {
+        '1300': '1300px',
+      },
       width: {
         '1/7': '14.2857143%',
         '2/7': '28.5714286%',
@@ -51,7 +54,7 @@ const config: Config = {
         '1300': '600px',
       },
       screens: {
-        'phone': { 'raw': '(max-width: 400px)' }, /* be aware here cuh, make sure that if the width of the screen is less then 600px the upload test is set to text-sm */
+        'phone': { 'raw': '(max-width: 600px)' }, /* be aware here cuh, make sure that if the width of the screen is less then 600px the upload test is set to text-sm */
       },
     },
   },
