@@ -62,7 +62,7 @@ export function StatusLabel() {
       )}
       {file ? (
         <>
-          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">{file.name}</span></p>
+          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 break-all"><span className="font-semibold">{file.name}</span></p>
           {isBig && <p className="text-md text-center text-red-500 dark:text-red-400">File is too big</p>}
         </>
       ) : (
