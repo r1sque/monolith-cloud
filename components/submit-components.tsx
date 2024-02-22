@@ -3,22 +3,7 @@
 import { useFormStatus } from 'react-dom';
 import { useState, useEffect } from 'react';
 
-export function SubmitButton() {
-  const { pending } = useFormStatus();
-
-  return (
-    <button
-      disabled={pending}
-      type="submit"
-      className="w-full bg-purple-400 phone:text-sm phone:text-ellipsis phone:overflow-hidden text-white py-2 px-4 rounded-md hover:bg-purple-500 transition-colors duration-300 focus-visible:outline-none focus-visible:ring focus-visible:border-purple-700"
-    >
-      {pending ? 'Uploading...' : 'Upload'}
-    </button>
-  );
-}
-
-export function StatusLabel() {
-  const { pending } = useFormStatus();
+function useOnFileChange() {
   const [file, setFile] = useState<File>();
 
   useEffect(() => {
@@ -34,6 +19,32 @@ export function StatusLabel() {
     return () => fileInput?.removeEventListener('change', handleFileChange);
   }, []);
 
+  return {
+    file,
+    // @ts-ignore
+    isBig: file?.size > 1_048_576,
+  };
+}
+
+export function SubmitButton() {
+  const { pending } = useFormStatus();
+  const { isBig } = useOnFileChange();
+
+  return (
+    <button
+      disabled={pending || isBig}
+      type="submit"
+      className="w-full bg-purple-400 phone:text-sm phone:text-ellipsis phone:overflow-hidden text-white py-2 px-4 rounded-md hover:bg-purple-500 transition-colors duration-300 focus-visible:outline-none focus-visible:ring focus-visible:border-purple-700"
+    >
+      {pending ? 'Uploading...' : 'Upload'}
+    </button>
+  );
+}
+
+export function StatusLabel() {
+  const { pending } = useFormStatus();
+  const { file, isBig } = useOnFileChange();
+
   return (
     <div className="flex flex-col items-center justify-center pt-5 pb-6 hover:scale-110 transition-transform duration-000 ease-in-out">
       {pending ? (      
@@ -47,7 +58,10 @@ export function StatusLabel() {
         </svg>
       )}
       {file ? (
-        <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">{file.name}</span></p>
+        <>
+          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">{file.name}</span></p>
+          {isBig && <p className="text-xs text-center text-red-500 dark:text-red-400">File is too big</p>}
+        </>
       ) : (
         <>
           <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or <span className="font-semibold">drag and drop</span></p>
