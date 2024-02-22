@@ -12,6 +12,19 @@ const config: Config = {
         "gradient-radial": "radial-gradient(var(--tw-gradient-stops))",
         "gradient-conic": "conic-gradient(from 180deg at 50% 50%, var(--tw-gradient-stops))",
       },
+      keyframes: {
+        animatedgradient: {
+          '0%': { backgroundPosition: '0% 50%' },
+          '50%': { backgroundPosition: '100% 50%' },
+          '100%': { backgroundPosition: '0% 50%' },
+        },
+      },
+      backgroundSize: {
+        '300%': '300%',
+      },
+      animation: {
+        gradient: 'animatedgradient 6s ease infinite alternate',
+      },
       colors: {
         black: {
           50: '#010101',
@@ -42,7 +55,7 @@ const config: Config = {
         '4/7': '57.1428571%',
         '5/7': '71.4285714%',
         '6/7': '85.7142857%',
-        '600': '1300px',
+        '1300': '1300px',
       },
       height: {
         '1/7': '14.2857143%',
@@ -51,7 +64,7 @@ const config: Config = {
         '4/7': '57.1428571%',
         '5/7': '71.4285714%',
         '6/7': '85.7142857%',
-        '1300': '600px',
+        '600': '600px',
       },
       screens: {
         'phone': { 'raw': '(max-width: 600px)' }, /* be aware here cuh, make sure that if the width of the screen is less then 600px the upload test is set to text-sm */

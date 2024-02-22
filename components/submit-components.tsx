@@ -34,8 +34,11 @@ export function SubmitButton() {
     <button
       disabled={pending || isBig}
       type="submit"
-      className="w-full bg-purple-400 phone:text-sm phone:text-ellipsis phone:overflow-hidden text-white py-2 px-4 rounded-md hover:bg-purple-500 transition-colors duration-300 focus-visible:outline-none focus-visible:ring focus-visible:border-purple-700"
-    >
+      className={`w-full py-2 px-4 rounded-md focus-visible:outline-none focus-visible:ring focus-visible:border-purple-700 ${
+        isBig
+          ? 'bg-zinc-700 text-gray-500 line-through cursor-not-allowed transition-all duration-300'
+          : 'bg-purple-400 hover:bg-purple-500 text-white transition duration-300'
+    }`}>
       {pending ? 'Uploading...' : 'Upload'}
     </button>
   );
@@ -60,7 +63,7 @@ export function StatusLabel() {
       {file ? (
         <>
           <p className="mb-2 text-sm text-gray-500 dark:text-gray-400"><span className="font-semibold">{file.name}</span></p>
-          {isBig && <p className="text-xs text-center text-red-500 dark:text-red-400">File is too big</p>}
+          {isBig && <p className="text-md text-center text-red-500 dark:text-red-400">File is too big</p>}
         </>
       ) : (
         <>
