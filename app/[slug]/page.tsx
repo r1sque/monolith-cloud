@@ -26,7 +26,8 @@ export default async function File({ params }: { params: { slug: string } }) {
         <PreviewComponent blob={blob} className="mb-4" />
 
         <h3 className="text-lg text-center m-2 phone:flex phone:flex-col">
-          <span>Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span></span> <span className="phone:hidden">| </span> 
+          <span>Uploaded at <span className="font-semibold">{blob.uploadedAt.toDateString()}</span></span>
+          <span className="phone:hidden">| </span> 
           <span className="font-semibold">{size} {unit}</span>
         </h3>
 
