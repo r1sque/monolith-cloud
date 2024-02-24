@@ -8,7 +8,7 @@ export const config = {
 
 export async function middleware(request: NextRequest) {
   const toLogin = NextResponse.redirect(new URL('/login', request.url));
-  
+
   const cookie = request.cookies.get('user')?.value;
 
   if (!cookie) {
