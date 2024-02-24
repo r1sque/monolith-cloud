@@ -26,7 +26,9 @@ function useOnFileChange() {
   };
 }
 
-export function SubmitButton() {
+export function SubmitButton({ onPending, ...props }: {
+  onPending?: string
+} & React.HTMLAttributes<HTMLButtonElement>) {
   const { pending } = useFormStatus();
   const { isBig } = useOnFileChange();
 
@@ -38,8 +40,9 @@ export function SubmitButton() {
         isBig
           ? 'bg-zinc-700 text-gray-500 line-through cursor-not-allowed transition-all duration-300'
           : 'bg-purple-400 hover:bg-purple-500 text-white transition duration-300'
-    }`}>
-      {pending ? 'Uploading...' : 'Upload'}
+    }`}
+    {...props}>
+      {pending ? onPending : props.children}
     </button>
   );
 }

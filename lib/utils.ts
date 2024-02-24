@@ -1,6 +1,8 @@
 import { sql } from "@vercel/postgres";
 import { head } from "@vercel/blob";
 import { notFound } from "next/navigation";
+import { cookies } from "next/headers";
+import { SignJWT } from 'jose';
 
 export async function fetchBlob(id: string) {
   try {
@@ -27,4 +29,23 @@ export function calculateSizeAndUnit(size: number) {
   }
 
   return [size, 'bytes'];
+}
+
+export const secret = new TextEncoder().encode(process.env.SECRET!);
+
+export async function addUserCookie(username: string) {
+  const jwt = await new SignJWT()
+    .setSubject(username)
+    .setIssuedAt()
+    .setProtectedHeader({ alg: 'HS256' })
+    .setExpirationTime('1d')
+    .sign(secret);
+
+  cookies().set('user', jwt, {
+    maxAge: 60 * 60 * 7 * 24,
+    httpOnly: true,
+    secure: true,
+    sameSite: 'lax',
+    path: '/'
+  });
 }

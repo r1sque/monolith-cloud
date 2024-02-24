@@ -1,38 +1,7 @@
 import { SubmitButton, StatusLabel } from "@/components/submit-components";
-import { put, del } from "@vercel/blob";
-import { redirect } from "next/navigation";
-import { sql } from '@vercel/postgres';
+import { uploadFile } from '@/lib/actions';
 
 export default function Home() {
-  async function uploadFile(formData: FormData) {
-    'use server';
-
-    const file = formData.get('file') as File;
-
-    if (file.size > 1_048_576) {
-      throw new Error();
-    }
-
-    let id: string;
-    try {
-      const blob = await put(file.name, file, { access: 'public' });
-
-      const match = /https:\/\/[\w+._-]+\/.*-(\w+)\..*/.exec(blob.url);
-      if (match === null) {
-        del(blob.url);
-        throw new Error('failed to match regex');
-      }
-      id = Array.from(match[1]).filter((_, i) => i % 2).join('');
-
-      await sql`INSERT INTO metadata (id, blob_url) VALUES (${id}, ${blob.url})`;
-    } catch (e) {
-      console.error(e);
-      throw new Error();
-    }
-
-    redirect('/' + id);
-  }
-
   return (
     <main className="bg-black-50 flex min-h-screen flex-col items-center p-24 phone:p-4">
       <h1 className="font-bold text-7xl text-center bg-gradient-to-r from-purple-500 to-white text-transparent bg-clip-text">
@@ -47,7 +16,7 @@ export default function Home() {
           <StatusLabel />
           <input name="file" id="file" type="file" className="hidden" required/>
         </label>
-        <SubmitButton />
+        <SubmitButton onPending="Uploading...">Upload</SubmitButton>
       </form>
     </main>
   );
