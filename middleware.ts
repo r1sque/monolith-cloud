@@ -16,7 +16,11 @@ export async function middleware(request: NextRequest) {
   }
 
   try {
-    await jwtVerify(cookie, secret);
+    const { payload } = await jwtVerify(cookie, secret);
+
+    if (Date.now() + payload.exp! < Date.now()) {
+      return toLogin;
+    }
   } catch (e: any) {
     return toLogin;
   }

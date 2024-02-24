@@ -38,7 +38,7 @@ export async function addUserCookie(username: string) {
     .setSubject(username)
     .setIssuedAt()
     .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('1d')
+    .setExpirationTime('7d')
     .sign(secret);
 
   cookies().set('user', jwt, {

@@ -3,7 +3,7 @@ import { uploadFile } from '@/lib/actions';
 
 export default function Home() {
   return (
-    <main className="bg-black-50 flex min-h-screen flex-col items-center p-24 phone:p-4">
+    <main className="bg-black-200 flex min-h-screen flex-col items-center p-24 phone:p-4">
       <h1 className="font-bold text-7xl text-center bg-gradient-to-r from-purple-500 to-white text-transparent bg-clip-text">
         Monolith Cloud
       </h1>
