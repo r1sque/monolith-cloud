@@ -12,8 +12,13 @@ export default function RegisterPage() {
   const [errorMessage, action] = useFormState(register, undefined);
 
   return (
-    <main className="bg-gradient-to-b from-black-100 via-purple-950 via-60% to-purple-700 h-screen flex flex-col justify-center items-center">
-      <form className={`max-w-md flex flex-col items-center ${SourceSans.className}`}  action={action}>
+    <main className="bg-grid-gradient bg-center h-screen flex flex-col justify-center items-center">
+
+      <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-r from-black-300 via-transparent to-black-300"></div>
+      <div className="absolute left-0 top-0 h-full w-full bg-gradient-to-b from-black-300 via-transparent to-black-300"></div>
+      <div className="absolute left-0 top-0 h-full w-full bg-shadow-gradient z-0"></div>
+
+      <form className={`z-10 max-w-md flex flex-col items-center ${SourceSans.className}`}  action={action}>
         <h1 className="font-bold text-5xl text-center bg-gradient-to-r from-purple-500 to-white text-transparent bg-clip-text mb-8">
           Registering to <br />
           Monolith Cloud

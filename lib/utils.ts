@@ -33,19 +33,20 @@ export function calculateSizeAndUnit(size: number) {
 
 export const secret = new TextEncoder().encode(process.env.SECRET!);
 
-export async function addUserCookie(username: string) {
-  const jwt = await new SignJWT()
-    .setSubject(username)
-    .setIssuedAt()
-    .setProtectedHeader({ alg: 'HS256' })
-    .setExpirationTime('7d')
-    .sign(secret);
-
-  cookies().set('user', jwt, {
-    maxAge: 60 * 60 * 7 * 24,
-    httpOnly: true,
-    secure: true,
-    sameSite: 'lax',
-    path: '/'
-  });
+export async function newSessionCookie() {
+  return {
+    name: 'session',
+    value: await new SignJWT()
+      .setIssuedAt()
+      .setProtectedHeader({ alg: 'HS256' })
+      .setExpirationTime('7d')
+      .sign(secret),
+    data: {
+      maxAge: 60 * 60 * 7 * 24,
+      httpOnly: true,
+      secure: true,
+      sameSite: 'lax',
+      path: '/'
+    },
+  };
 }

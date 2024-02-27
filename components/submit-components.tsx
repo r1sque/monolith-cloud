@@ -26,6 +26,45 @@ function useOnFileChange() {
   };
 }
 
+function useFullScreenDrag(inputSelector: string) {
+  const [isDragging, setDragging] = useState(false);
+
+  useEffect(() => {
+    const onDrop = (e: DragEvent) => {
+      e.preventDefault();
+
+      const file = document.querySelector(inputSelector) as HTMLInputElement;
+      file.files = e.dataTransfer?.files || null;
+      file.dispatchEvent(new Event('change'));
+      setDragging(false);
+    };
+
+    const onDragEnter = (_: DragEvent) => setDragging(true);
+
+    const onDragLeave = (e: DragEvent) => {
+      if (e.x === 0 && e.y === 0) {
+        setDragging(false);
+      }
+    };
+
+    const onDragOver = (e: DragEvent) => e.preventDefault();
+
+    document.addEventListener('drop', onDrop);
+    document.addEventListener('dragenter', onDragEnter);
+    document.addEventListener('dragleave', onDragLeave);
+    document.addEventListener('dragover', onDragOver);
+
+    return () => {
+      document.removeEventListener('drop', onDrop);
+      document.removeEventListener('dragenter', onDragEnter);
+      document.removeEventListener('dragleave', onDragLeave);
+      document.removeEventListener('dragover', onDragOver);
+    };
+  }, [inputSelector]);
+
+  return isDragging;
+}
+
 export function SubmitButton({ onPending, ...props }: {
   onPending?: string
 } & React.HTMLAttributes<HTMLButtonElement>) {
@@ -50,6 +89,7 @@ export function SubmitButton({ onPending, ...props }: {
 export function StatusLabel() {
   const { pending } = useFormStatus();
   const { file, isBig } = useOnFileChange();
+  const isDraging = useFullScreenDrag('#file');
 
   return (
     <div className="flex flex-col items-center justify-center pt-5 pb-6 hover:scale-110 transition-transform duration-000 ease-in-out">
@@ -73,6 +113,9 @@ export function StatusLabel() {
           <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or <span className="font-semibold">drag and drop</span></p>
           <p className="text-xs text-center text-gray-500 dark:text-gray-400">any files (MAX. 1MB)</p>
         </>
+      )}
+      {isDraging && (
+        <p>Dragging...</p>
       )}
     </div>
   );

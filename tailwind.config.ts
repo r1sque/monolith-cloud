@@ -37,7 +37,7 @@ const config: Config = {
           50: '#010101',
           100: 'rgba(16, 16, 16, 1)',
           200: '#1a1a1a',
-          300: '#e0cec7',
+          300: '#121214',
           400: '#d2bab0',
           500: '#bfa094',
           600: '#a18072',
@@ -51,11 +51,15 @@ const config: Config = {
       },
       maxHeight: {
         '600': '600px',
+        '700': '700px',
+        '800': '800px',
       },
       maxWidth: {
         '1300': '1300px',
         '105%': '105%',
         '600': '600px',
+        '700': '700px',
+        '800': '800px',
         '400': '400px',
       },
       width: {
@@ -67,6 +71,8 @@ const config: Config = {
         '6/7': '85.7142857%',
         '110%': '110%',
         '600': '600px',
+        '700': '700px',
+        '800': '800px',
         '1300': '1300px',
       },
       height: {
@@ -76,11 +82,14 @@ const config: Config = {
         '4/7': '57.1428571%',
         '5/7': '71.4285714%',
         '6/7': '85.7142857%',
+        '500': '500px',
         '600': '600px',
+        '700': '700px',
+        '800': '800px',
         '1300': '1300px',
       },
       screens: {
-        'phone': { 'raw': '(max-width: 600px)' }, /* be aware here cuh, make sure that if the width of the screen is less then 600px the upload test is set to text-sm */
+        'phone': { 'raw': '(max-width: 700px)' }, /* be aware here cuh, make sure that if the width of the screen is less then 600px the upload test is set to text-sm */
       },
     },
   },

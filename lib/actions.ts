@@ -4,7 +4,8 @@ import { put, del } from "@vercel/blob";
 import { redirect } from "next/navigation";
 import { sql } from '@vercel/postgres';
 import { hash, compareSync } from "bcrypt";
-import { addUserCookie } from './utils';
+import { newSessionCookie } from './utils';
+import { cookies } from "next/headers";
 
 export async function uploadFile(formData: FormData) {
   const file = formData.get('file') as File;
@@ -21,19 +22,27 @@ export async function uploadFile(formData: FormData) {
     await sql`INSERT INTO metadata (id, blob_url) VALUES (${id}, ${blob.url})`;
   } catch (e) {
     console.error(e);
+    del(blob.url);
     throw new Error();
   }
 
-  redirect('/' + id);
+  redirect('/upload' + id);
+}
+
+export async function addSessionCookie() {
+  const { name, value, data } = await newSessionCookie();
+
+  // @ts-ignore
+  cookies().set(name, value, data);
 }
 
 export async function register(_: unknown, formData: FormData) {
-  const login = formData.get('login') as string;
+  const username = formData.get('login') as string;
   const invitationCode = formData.get('code') as string;
   const password = formData.get('password') as string;
 
-  if (!/^[\w_-àâçéèêëîïôûùüÿñæœ.]{4,32}$/i.test(login)) {
-    return 'Login too long';
+  if (!/^[\w_-àâçéèêëîïôûùüÿñæœ.]{4,32}$/i.test(username)) {
+    return 'Invalid username';
   }
 
   const { rows: [code] } = await sql`SELECT code FROM invite_codes WHERE code = ${invitationCode}`;
@@ -47,21 +56,21 @@ export async function register(_: unknown, formData: FormData) {
   const encrypted = await hash(password, 8);
 
   try {
-    await sql`INSERT INTO users VALUES (${login}, ${encrypted})`;
+    await sql`INSERT INTO users VALUES (${username}, ${encrypted})`;
   } catch (e: any) {
     return 'Username already taken.'
   }
 
-  await addUserCookie(login);
+  await addSessionCookie();
 
-  return redirect('/');
+  return redirect('/upload');
 }
 
 export async function authenticate(_: unknown, formData: FormData) {
-  const login = formData.get('login') as string;
+  const username = formData.get('login') as string;
   const password = formData.get('password') as string;
 
-  const { rows: [row] } = await sql`SELECT password FROM users WHERE username = ${login}`;
+  const { rows: [row] } = await sql`SELECT password FROM users WHERE username = ${username}`;
 
   if (!row) {
     return 'User not found';
@@ -71,7 +80,7 @@ export async function authenticate(_: unknown, formData: FormData) {
     return 'Wrong credentials';
   }
 
-  await addUserCookie(login);
+  await addSessionCookie();
 
-  return redirect('/');
+  return redirect('/upload');
 }
