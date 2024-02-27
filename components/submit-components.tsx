@@ -99,23 +99,29 @@ export function StatusLabel() {
           <path className="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
         </svg>
       ) : (
-        <svg className="w-8 h-8 mb-4 text-gray-500 dark:text-gray-400" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
+        <svg className={`w-8 h-8 mb-4 text-gray-500 dark:text-gray-400 ${isDraging ? 'hidden' : ''}`} aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 20 16">
           <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13 13h3a3 3 0 0 0 0-6h-.025A5.56 5.56 0 0 0 16 6.5 5.5 5.5 0 0 0 5.207 5.021C5.137 5.017 5.071 5 5 5a4 4 0 0 0 0 8h2.167M10 15V6m0 0L8 8m2-2 2 2"/>
         </svg>
       )}
       {file ? (
         <>
-          <p className="mb-2 text-sm text-gray-500 dark:text-gray-400 break-all"><span className="font-semibold">{file.name}</span></p>
+          <p className={`mb-2 text-sm text-gray-500 dark:text-gray-400 break-all ${isDraging ? 'hidden' : ''}`}><span className="font-semibold">{file.name}</span></p>
           {isBig && <p className="text-md text-center text-red-500 dark:text-red-400">File is too big</p>}
         </>
       ) : (
         <>
-          <p className="mb-2 text-sm text-center text-gray-500 dark:text-gray-400"><span className="font-semibold">Click to upload</span> or <span className="font-semibold">drag and drop</span></p>
-          <p className="text-xs text-center text-gray-500 dark:text-gray-400">any files (MAX. 1MB)</p>
+          <p className={`mb-2 text-sm text-center text-gray-500 dark:text-gray-400 ${isDraging ? 'hidden' : ''}`}><span className="font-semibold">Click to upload</span> or <span className="font-semibold">drag and drop</span></p>
+          <p className={`text-xs text-center text-gray-500 dark:text-gray-400 ${isDraging ? 'hidden' : ''}`}>any files (MAX. 1MB)</p>
         </>
       )}
       {isDraging && (
-        <p>Dragging...</p>
+        <p className="text-lg text-center text-gray-400 font-semibold transition-all fade-text duration-500 ease-in-out">Drop it here to upload it
+          <div className="flex items-center justify-center">
+            <svg className="mt-5 w-10 h-10 text-gray-800 dark:text-white animate-bounce" aria-hidden="true" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24">
+              <path stroke="currentColor" strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 5v9m-5 0H5a1 1 0 0 0-1 1v4c0 .6.4 1 1 1h14c.6 0 1-.4 1-1v-4c0-.6-.4-1-1-1h-2M8 9l4-5 4 5m1 8h0"/>
+            </svg>
+          </div>
+        </p>
       )}
     </div>
   );

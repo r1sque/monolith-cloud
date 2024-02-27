@@ -260,8 +260,8 @@ export default function Home() {
     <section className="min-w-full flex flex-col items-center justify-center mb-10 p-12 mt-12"> 
       
       <h2 className="text-4xl mt-10">About the next project</h2>
-      <p className="text-lg mt-5 text-center">We are currenly working on a CSV Pipeline</p>
-      <p className="mt-10 text-transparent hover:text-white cursor-pointer transition-all duration-500 ease-in-out">ay look I aint gonna lie ion know what browski sirkostya009 meant by this but hey he said we gotta do it so we doing it type thing</p>
+      <p className="text-lg mt-5 text-center">We are currently working on our next project codenamed CSV Shaper</p>
+      <p className="mt-10 text-transparent hover:text-white transition-all duration-500 ease-in-out">ay look I aint gonna lie ion know what browski sirkostya009 meant by this but hey he said we gotta do it so we doing it type Shit 🧑‍🦯</p>
     </section>
     <hr className="w-0" id="others"/> {/* its there for the navigation of the navbar */}
     <footer className="mt-32">
