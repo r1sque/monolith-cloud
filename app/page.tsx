@@ -123,7 +123,7 @@ export default function Home() {
       <div className="relative grid justify-items-center break-words text-center grid-cols-2 phone:grid-cols-1 gap-y-32 gap-x-0 m-auto max-w-1300">
         <div className="flex justify-center items-center flex-col space-y-3 text-lg font-medium leading-6">
           <h3 className="text-white">r1sque</h3>
-          <p className="text-indigo-300">Made the Frontend</p>
+          <p className="text-indigo-300">Full Stack dev</p>
           <div className="flex justify-center mt-5 space-x-5">
             <Link href="https://github.com/r1sque" target="_blank" rel="noopener noreferrer" className="inline-block text-gray-400">
               <span className="sr-only">GitHub</span>
@@ -147,7 +147,7 @@ export default function Home() {
 
         <div className="flex justify-center items-center flex-col space-y-3 text-lg font-medium leading-6">
           <h3 className="text-white">sirkostya009</h3>
-          <p className="text-indigo-300">Made the Backend</p>
+          <p className="text-indigo-300">Full Stack dev</p>
           <div className="flex justify-center mt-5 space-x-5">
             <Link href="https://github.com/sirkostya009" target="_blank" rel="noopener noreferrer" className="inline-block text-gray-400">
               <span className="sr-only">GitHub</span>
