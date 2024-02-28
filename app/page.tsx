@@ -23,14 +23,14 @@ export default function Home() {
 
         <ul className="flex items-center space-x-10">
           <li>
-            <a href="#main" className="block py-2 px-3 text-white/50 hover:text-purple-300" aria-current="page">
+            <a href="#main" className="block py-2 px-3 text-white/50 hover:text-purple-300 relative after:right-0 after:block after:content-[''] after:absolute after:h-[1px] after:bg-purple-200 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center">
               Main
             </a>
           </li>
           <li>
             <a
               href="#project"
-              className="block py-2 px-3 text-white/50 hover:text-purple-300"
+              className="block py-2 px-3 text-white/50 hover:text-purple-300 relative after:right-0 after:block after:content-[''] after:absolute after:h-[1px] after:bg-purple-200 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center"
             >
               Project
             </a>
@@ -38,7 +38,7 @@ export default function Home() {
           <li>
             <a
               href="#tools"
-              className="block py-2 px-3 text-white/50 hover:text-purple-300"
+              className="block py-2 px-3 text-white/50 hover:text-purple-300 relative after:right-0 after:block after:content-[''] after:absolute after:h-[1px] after:bg-purple-200 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center"
             >
               Tools
             </a>
@@ -46,7 +46,7 @@ export default function Home() {
           <li>
             <a
               href="#others"
-              className="block py-2 px-3 text-white/50 hover:text-purple-300"
+              className="block py-2 px-3 text-white/50 hover:text-purple-300 relative after:right-0 after:block after:content-[''] after:absolute after:h-[1px] after:bg-purple-200 after:w-full after:scale-x-0 after:hover:scale-x-100 after:transition after:duration-300 after:origin-center"
             >
               Others
             </a>
