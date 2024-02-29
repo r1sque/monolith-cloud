@@ -26,7 +26,7 @@ export async function uploadFile(formData: FormData) {
     throw new Error();
   }
 
-  redirect('/upload' + id);
+  redirect('/' + id);
 }
 
 export async function addSessionCookie() {
