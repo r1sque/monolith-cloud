@@ -14,8 +14,8 @@ export default function Home() {
         <a href="/" className="flex items-center space-x-10 rtl:space-x-reverse">
         <Image
           src="/monolith.png"
-          width={60}
-          height={60}
+          width={45}
+          height={45}
           className=""
           alt="Monolith Cloud Logo"
         />
