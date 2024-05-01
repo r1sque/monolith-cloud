@@ -77,7 +77,7 @@ export default function Home() {
         Monolith Cloud
       </h1>
       <p className="relative mt-8 text-white text-center text-lg capitalize leading-normal phone:text-xl phone:w-full">
-        very quick, very simple and convinient way to sotre and share small files with others
+        very quick, very simple and convinient way to store and share small files with others
       </p>
       
       <div className="flex flex-row items-center justify-center mt-5 gap-6 phone:flex-col phone:gap-y-2">
@@ -263,12 +263,13 @@ export default function Home() {
       <p className="text-lg mt-5 text-center">We are currently working on our next project codenamed CSV Shaper</p>
       <p className="mt-10 text-transparent hover:text-white transition-all duration-500 ease-in-out">ay look I aint gonna lie ion know what browski sirkostya009 meant by this but hey he said we gotta do it so we doing it type Shit 🧑‍🦯</p>
     </section>
+
     <hr className="w-0" id="others"/> {/* its there for the navigation of the navbar */}
+
     <footer className="mt-32">
-      <p>Style inspired by <Link href="https://twitter.com/Backifyco" target="_blank">
-        https://twitter.com/Backifyco </Link>
-      </p>
+      <p>Style inspired by <Link className="text-indigo-300 hover:underline" href="https://twitter.com/Backifyco" target="_blank"> Backifyco </Link></p>
     </footer>
+    
     </main>
   );
 }
